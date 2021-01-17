@@ -18,7 +18,7 @@ import warnings
 from Functions.CorpInfo import *
 
 
-WeChatUserName='蔚西'
+WeChatUserName='UserNameHere'
 SurName=WeChatUserName[:1]
 Name=WeChatUserName[1:]
 url = URL  # 这里的URL在python2.CorpInfo 定义
