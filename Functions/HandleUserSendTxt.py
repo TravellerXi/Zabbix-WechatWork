@@ -88,7 +88,7 @@ def GetHostInventoryFromHostName(HostName):
     return (RawContent)
 
 def ReplyToAllInvolved(ReplyContent,EventID,username):
-    url = URL  # 这里的URL在python2.CorpInfo 定义
+    url = URL  # 这里的URL在Functions.CorpInfo 定义
     zapi = ZabbixAPI(server=url)
     warnings.filterwarnings('ignore')
     zapi.login(user=UserName, password=PassWord)
