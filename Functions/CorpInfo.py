@@ -55,6 +55,6 @@ if config.get('WebSetting', 'Processes')=='1':
     Processes=True
 elif config.get('WebSetting', 'Processes')=='0':
     Processes=False
-#Debug，未定义，默认True
+#多进程，未定义，默认True
 else:
     Processes=True
