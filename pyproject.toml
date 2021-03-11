@@ -1,6 +1,8 @@
 [build-system]
 requires = [
     "setuptools>=42",
-    "wheel"
+    "wheel",
+    "flask==1.1.2",
+    "pycrypto==2.6.1"
 ]
 build-backend = "setuptools.build_meta"
