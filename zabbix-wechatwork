@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+import argparse
+import os
+from shutil import copyfile
+import site
+
+if __name__=='__main__':
+    pythonpath=site.getsitepackages()[1]
+    WsgiInfo="""import sys
+sys.path.insert(0, '"""+pythonpath+"""/zabbix-wechatwork')
+from main import app as application
+    """
+    parse = argparse.ArgumentParser()
+    parse.add_argument("-install",action='store_true',default=False,help='执行安装')
+    parse.add_argument("-f",action='store_true',default=False,help='与-install搭配使用，强制安装（会清除配置文件）')
+    parse.add_argument("-V", action='store_true', default=False, help='版本信息')
+    parse.add_argument("-verbose", action='store_true', default=False, help='显示配置信息')
+    args=parse.parse_args()
+    if args.install:
+        if args.f:
+            os.system('rm -rf /etc/zabbix-wechatwork/*')
+        try:
+            os.mkdir('/etc/zabbix-wechatwork')
+        except Exception as e:
+            print(e)
+        try:
+            os.mkdir('/var/log/zabbix-wechatwork')
+        except Exception as e:
+            print(e)
+        with open(pythonpath+'/zabbix-wechatwork/zabbix-wechatwork.wsgi','w') as f:
+            f.write(WsgiInfo)
+        os.system('chown apache:apache -R /etc/zabbix-wechatwork/')
+        os.system('chown apache:apache -R /var/log/zabbix-wechatwork/')
+        copyfile(pythonpath+'/zabbix-wechatwork/Configure.ini','/etc/zabbix-wechatwork/Configure.ini')
+        copyfile(pythonpath+'/zabbix-wechatwork/zabbix-wechatwork.conf','/etc/zabbix-wechatwork/zabbix-wechatwork.conf.sample')
+        #copyfile(pythonpath+'/zabbix-wechatwork/zabbix-wechatwork.wsgi','/etc/zabbix-wechatwork/zabbix-wechatwork.wsgi')
+
+        print('安装成功，请去/etc/zabbix-wechatwork下配置Configure.ini,并参考zabbix-wechatwork.conf.sample配置Apache')
+    elif args.V:
+        os.system('pip3 list|grep zabbix-wechatwork')
+    elif args.verbose:
+        print('程序源码位置: '+pythonpath+'/zabbix-wechatwork')
+        print('配置文件地址: /etc/zabbix-wechatwork')
+        print('程序日志文件地址: /var/log/zabbix-wechatwork/main.log')
+        print('程序Apache日志地址: /var/log/httpd/zabbix-wechatwork.log')
+    else:
+        print('键入"-h"以获取用法')
+
+
